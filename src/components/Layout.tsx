@@ -1,7 +1,6 @@
 import Header from "./Header";
 import { Container } from "@sberdevices/plasma-ui";
 import styled from "styled-components";
-// import { assistant } from "../assistant";
 
 const ContainerStyled = styled(Container)`
     height: calc(100vh - 144px);
@@ -10,10 +9,6 @@ const ContainerStyled = styled(Container)`
 `;
 
 const Layout: React.FC = (props) => {
-    // useEffect(() => {
-    //     console.log(assistant);
-    // }, []);
-
     return (
         <ContainerStyled>
             <Header />

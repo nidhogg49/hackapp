@@ -37,7 +37,7 @@ const App: React.FC = () => {
 
   const history = useHistory();
 
-  if (data?.type === "smart_app_data") {
+  if (data?.type === "smart_app_data" && data?.action?.type === "go_to_search") {
     history.push("/search");
   }
 

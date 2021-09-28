@@ -17,7 +17,6 @@ const items = ['item', 'item', 'item', 'item', 'item', 'item'];
 
 const Search: React.FC = () => {
     const [index, setIndex] = React.useState(0);
-    console.log(index);
 
     const handlerSkip = () => {
         if (index < items.length - 1) {

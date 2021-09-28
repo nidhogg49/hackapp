@@ -6,7 +6,7 @@ import Layout from './Layout';
 import Main from './Main';
 import Search from './Search';
 
-const Router: React.FC = () => (
+const Router = () => (
     <Layout>
         <Switch>
             <Route path="/search">
