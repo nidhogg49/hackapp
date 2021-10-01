@@ -37,10 +37,18 @@ const App: React.FC = () => {
 
   const history = useHistory();
 
-  if (data?.type === "smart_app_data" && data?.action?.type === "go_to_search") {
-    history.push("/search");
+  if(data?.type === "smart_app_data"){
+    switch (data?.action?.type) {
+      case "go_to_search":
+        history.push("/search");
+        break;
+      case "randomAction":
+        history.push("/random");
+        break;
+      default:
+        console.log("дефолт");
+    }
   }
-
   return (
     <AppContext.Provider value={{
       authenticated: true,
