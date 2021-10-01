@@ -8,37 +8,42 @@ const StyledDiv = styled.div`
     min-height: 0;
 `;
 
+type data = {
+    description: string;
+}
+
 const Random: React.FC = () => {
 
     const [isLoading, setLoading] = useState(false);
     const [isError, setError] = useState(false);
-    const [data, setData] = useState({});
+    const [data, setData] = useState<data>({} as data);
 
     useEffect(() => {
-        const fetchData = async () =>{
-            setError(false);
-            setLoading(true);
+        setError(false);
+        setLoading(true);
 
-            try{
-                const response = await axios("http://46.243.143.219/assistant/api/v1/lucky");
-
+        axios.get('http://46.243.143.219/assistant/api/v1/lucky')
+            .then(function (response) {
+                // handle success
+                console.log(response);
                 setData(response.data);
-                console.log(JSON.stringify(response.data));
-            } catch (error){
-                console.log("error");
-                setError(true);
-            }
-            setLoading(false);
-        };
-        fetchData();
-    },[]);
-    
+                setLoading(false);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    }, []);
+
     if (isError) return <h1>Error</h1>
     if (isLoading) return <h1>Loading</h1>
     return (
         <StyledDiv>
-            <div>   
-                {JSON.stringify(data)}
+            <div>
+                {data.description}
             </div>
         </StyledDiv>
     )
