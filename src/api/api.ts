@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'google.com/'
+    baseURL: 'http://localhost:8080/assistant/api/v1/'
 });

@@ -8,6 +8,7 @@ import { DeviceThemeProvider } from '@sberdevices/plasma-ui';
 import Router from './components/Router';
 import { useHistory } from "react-router-dom";
 import { AssistantContext } from './context/assistantContext';
+import { EventContextProvider } from './context/eventContext';
 
 const TypoScale = createGlobalStyle(sberBox);
 
@@ -21,6 +22,14 @@ const DocStyles = createGlobalStyle`
 
     body {
       height: 100%;
+    }
+
+    a {
+      text-decoration: none;
+
+      &:focus, &:hover, &:visited, &:link, &:active {
+          text-decoration: none;
+      }
     }
 `;
 
@@ -37,7 +46,7 @@ const App: React.FC = () => {
 
   const history = useHistory();
 
-  if(data?.type === "smart_app_data"){
+  if (data?.type === "smart_app_data") {
     switch (data?.action?.type) {
       case "go_to_search":
         history.push("/search");
@@ -55,7 +64,7 @@ const App: React.FC = () => {
       lang: 'en',
       theme: 'dark'
     }}>
-      <DeviceThemeProvider /*detectDeviceCallback={() => 'sberBox'}*/>
+      <DeviceThemeProvider detectDeviceCallback={() => 'mobile'}>
         <TypoScale />
         <DocStyles />
         {(() => {
@@ -70,19 +79,20 @@ const App: React.FC = () => {
               return;
           }
         })()}
-
-        <AppContext.Consumer>
-          {
-            ({ authenticated, lang }) => {
-              if (authenticated) {
-                return <Router />
+        <EventContextProvider>
+          <AppContext.Consumer>
+            {
+              ({ authenticated, lang }) => {
+                if (authenticated) {
+                  return <Router />
+                }
+                return <h1>Необходимо войти с систему</h1>
               }
-              return <h1>Необходимо войти с систему</h1>
             }
-          }
-        </AppContext.Consumer>
+          </AppContext.Consumer>
+        </EventContextProvider>
       </DeviceThemeProvider>
-    </AppContext.Provider>
+    </AppContext.Provider >
   );
 };
 

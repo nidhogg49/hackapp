@@ -4,17 +4,21 @@ import {
 } from 'react-router-dom';
 import Layout from './Layout';
 import Main from './Main';
-import Search from './Search';
 import Random from './Random';
+import Lucky from './Lucky';
+import MyCard from './Card';
 
 const Router = () => (
     <Layout>
         <Switch>
-            <Route path="/search">
-                <Search />
+            <Route path="/lucky">
+                <Lucky />
             </Route>
             <Route path="/random">
                 <Random />
+            </Route>
+            <Route path="/card">
+                <MyCard />
             </Route>
             <Route path="/">
                 <Main />
