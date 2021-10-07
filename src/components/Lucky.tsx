@@ -53,7 +53,7 @@ const Lucky: React.FC = () => {
     };
 
     const getLucky = () => {
-        api.get('lucky')
+        api.get('event/lucky')
             .then((resp) => {
                 console.count('lucky');
                 console.log(resp);
