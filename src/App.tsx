@@ -1,17 +1,16 @@
 import { AppContext } from './context/context';
-import { BrowserRouter } from 'react-router-dom';
 import { DeviceThemeProvider } from '@sberdevices/plasma-ui';
 import { AssistantContext } from './context/assistantContext';
 import { EventContextProvider } from './context/eventContext';
 import { createGlobalStyle } from 'styled-components';
-import { sberBox } from '@sberdevices/plasma-tokens/typo';
+import { mobile } from '@sberdevices/plasma-tokens/typo';
 import { darkEva, darkJoy, darkSber } from '@sberdevices/plasma-tokens';
 import { text, background, gradient } from '@sberdevices/plasma-tokens';
 import { useContext } from "react";
 import Layout from './components/Layout';
 import { useHistory } from 'react-router-dom';
 
-const TypoScale = createGlobalStyle(sberBox);
+const TypoScale = createGlobalStyle(mobile);
 
 const DocStyles = createGlobalStyle`
     html {
@@ -53,9 +52,9 @@ const App = () => {
       case "randomAction":
         history.push("/random");
         break;
-        case "randomCoffee":
-          history.push("/randomCoffee");
-          break;
+      case "randomCoffee":
+        history.push("/randomCoffee");
+        break;
       default:
         console.log("дефолт");
     }
@@ -81,11 +80,11 @@ const App = () => {
           }
         })()}
 
-          <EventContextProvider>
-            <Layout />
-          </EventContextProvider>
-        </DeviceThemeProvider>
-      </AppContext.Provider >
+        <EventContextProvider>
+          <Layout />
+        </EventContextProvider>
+      </DeviceThemeProvider>
+    </AppContext.Provider >
   )
 };
 

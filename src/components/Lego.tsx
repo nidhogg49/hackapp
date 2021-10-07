@@ -1,7 +1,5 @@
 import { Step, Stepper, StepLabel, StepContent } from '@material-ui/core';
-import { IconClose } from '@sberdevices/plasma-icons';
-import { Card, CardBody, CardContent, CardMedia, TextBox, TextBoxBigTitle, TextBoxSubTitle, Button, Footnote1, Caption } from '@sberdevices/plasma-ui';
-import { spawn } from 'child_process';
+import { Card, CardBody, CardContent, CardMedia, TextBox, TextBoxSubTitle, Button, Caption } from '@sberdevices/plasma-ui';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import styled from 'styled-components';
@@ -43,10 +41,6 @@ const Lego = () => {
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
     };
 
     return (
