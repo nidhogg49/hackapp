@@ -1,10 +1,13 @@
 import { Button } from "@sberdevices/plasma-ui";
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { PersonContext } from "../context/personContext";
 import { eventData } from '../context/types';
 import user from '../mocks/users';
+import TinderCard from 'react-tinder-card';
+
+declare type Direction = 'left' | 'right' | 'up' | 'down'
 
 const TikTokCarousel = styled.div`
     height: 100%;
@@ -36,7 +39,15 @@ const TikTokCarouselButtons = styled.div`
     
 `;
 
+
 const RandomCoffee: React.FC = () => {
+    const history = useHistory();
+    const [lastDirection, setLastDirection] = useState<Direction>();
+    const swiped = (direction: Direction) => {
+        setLastDirection(direction)
+        console.log(direction);
+    }
+
     const [items, setItems] = useState([] as Array<eventData>);
     const [index, setIndex] = useState(0);
     const { setPerson } = useContext<any>(PersonContext);
@@ -49,6 +60,7 @@ const RandomCoffee: React.FC = () => {
 
     const handlerChoose = (i: number) => {
         setPerson({ ...items[i] });
+        history.push("/Person");
     };
 
     const getPerson = () => {
@@ -68,23 +80,35 @@ const RandomCoffee: React.FC = () => {
         }
     });
 
+    const onCardLeftScreen = (direction: Direction,index: number) => {
+        if (direction == 'left')
+            handlerSkip();
+        else 
+            handlerChoose(index);
+    }
+
     return (
         <TikTokCarousel ref={refTikTokCarousel}>
             {
                 items.map((el, i) => {
                     return (
-                        <TikTokCarouselItem style={{ backgroundImage: `url(${items[i].images[0].image})` }} key={i}>
-                            <h4>{el.title}</h4>
-                            <TikTokCarouselButtons>
-                                <Button onClick={handlerSkip} size="s" view="secondary">Пропустить</Button>
-                                <Link to='/Person'>
-                                    <Button onClick={() => handlerChoose(i)} size="s" view="primary">Выбрать</Button>
-                                </Link>
-                            </TikTokCarouselButtons>
-                        </TikTokCarouselItem>)
+                        <div className='cardContainer'>
+                            <TinderCard onSwipe={(dir) => swiped(dir)} onCardLeftScreen={(dir) => onCardLeftScreen(dir,i)}  flickOnSwipe preventSwipe={["up","down"]}>
+                                <TikTokCarouselItem style={{ backgroundImage: `url(${items[i].images[0].image})` }} key={i}>
+                                    <h4>{el.title}</h4>
+                                </TikTokCarouselItem>
+                            </TinderCard>
+                            <TinderCard onSwipe={(dir) => swiped(dir)} onCardLeftScreen={(dir) => onCardLeftScreen(dir,i)}  flickOnSwipe preventSwipe={["up","down"]}>
+                                <TikTokCarouselItem style={{ backgroundImage: `url(${items[i].images[0].image})` }} key={i}>
+                                    <h4>{el.title}</h4>
+                                </TikTokCarouselItem>
+                            </TinderCard>
+                        </div>
+                    )
                 })
             }
         </TikTokCarousel>
+        
     )
 };
 
