@@ -10,25 +10,35 @@ const assistantInstance = createSmartappDebugger({
 export const AssistantContext = createContext<{
     instance: any;
     data: any | null;
+    character: string;
 }>({
     instance: assistantInstance,
-    data: null
+    data: null,
+    character: 'sber'
 });
 
 export const AssistantProvider: React.FC = ({ children }) => {
     const assistant = useRef(assistantInstance);
+
     const [data, setData] = useState<any | null>(null);
+    const [character, setCharacter] = useState('sber');
 
     useEffect(() => {
         assistant.current.on('data', (data) => {
+            console.log('Assistant', data);
             setData(data);
+
+            if (data?.type === "character") {
+                setCharacter(data.character.id);
+            }
         });
     }, []);
 
     return (
         <AssistantContext.Provider value={{
             instance: assistant,
-            data
+            data,
+            character
         }}>
             {children}
         </AssistantContext.Provider>

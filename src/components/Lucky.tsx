@@ -36,7 +36,7 @@ const TikTokCarouselButtons = styled.div`
     
 `;
 
-const Lucky: React.FC = () => {
+const Lucky = () => {
     const [items, setItems] = useState([] as Array<eventData>);
     const [index, setIndex] = useState(0);
     const { event, setEvent } = useContext<any>(EventContext);
