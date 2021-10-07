@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import api from "../api/api";
 import { EventContext } from '../context/eventContext';
-import { eventData } from '../context/types'
+import { definitions } from '../api/typesAPI'
 
 const TikTokCarousel = styled.div`
     height: 100%;
@@ -37,7 +37,7 @@ const TikTokCarouselButtons = styled.div`
 `;
 
 const Lucky = () => {
-    const [items, setItems] = useState([] as Array<eventData>);
+    const [items, setItems] = useState([] as Array<definitions['Event']>);
     const [index, setIndex] = useState(0);
     const { event, setEvent } = useContext<any>(EventContext);
 
@@ -49,11 +49,59 @@ const Lucky = () => {
 
     const handlerChoose = (i: number) => {
         setEvent({ ...items[i] });
+
+        api.post('api/v1/route')
+            .then((resp) => {
+                console.log('route', resp.data);
+
+                const routeId: number = resp.data.id;
+
+                api({
+                    method: 'post',
+                    url: 'api/v1/route-event',
+                    data: { ...items[i] },
+                    params: {
+                        routeId: routeId
+                    }
+                })
+                    .then((resp) => {
+                        console.log('route-event', resp);
+
+                        const getCurrentPositionSuccess = (location: any) => {
+                            console.log(location);
+
+                            api({
+                                method: 'get',
+                                url: 'api/v1/route/distance',
+                                params: {
+                                    currentLat: location.coords.latitude,
+                                    currentLon: location.coords.longitude,
+                                    routeId: routeId
+                                }
+
+                            })
+                                .then((resp) => {
+                                    console.log('asdadsadsadfewvrebgb', resp);
+                                });
+                        };
+
+                        window.navigator.geolocation.getCurrentPosition((location) => { getCurrentPositionSuccess(location) }, (err) => { console.log('getCurrentPosition', err) });
+                    })
+                    .catch((err) => {
+                        console.log('err', err);
+                    });
+
+                //setItems(() => [...items, resp.data]);
+            })
+            .catch((err) => {
+                console.log('err', err);
+            });
+
         console.log('Lucky', event)
     };
 
     const getLucky = () => {
-        api.get('event/lucky')
+        api.get('api/event/v1/lucky')
             .then((resp) => {
                 console.count('lucky');
                 console.log(resp);
@@ -61,7 +109,7 @@ const Lucky = () => {
                 setItems(() => [...items, resp.data]);
             })
             .catch((err) => {
-                console.log(err);
+                console.log('err', err);
             });
     }
 
@@ -82,13 +130,13 @@ const Lucky = () => {
             {
                 items.map((el, i) => {
                     return (
-                        <TikTokCarouselItem style={{ backgroundImage: `url(${items[i].images[0].image})` }} key={i}>
-                            <h4>{el.title}</h4>
+                        <TikTokCarouselItem style={{ backgroundImage: `url(${items[i].imageUrl})` }} key={i}>
+                            <h4>{el.name}</h4>
                             <TikTokCarouselButtons>
                                 <Button onClick={handlerSkip} size="s" view="secondary">Пропустить</Button>
-                                <Link to='/Card'>
-                                    <Button onClick={() => handlerChoose(i)} size="s" view="primary">Выбрать</Button>
-                                </Link>
+                                {/* <Link to='/Card'> */}
+                                <Button onClick={() => handlerChoose(i)} size="s" view="primary">Выбрать</Button>
+                                {/* </Link> */}
                             </TikTokCarouselButtons>
                         </TikTokCarouselItem>)
                 })

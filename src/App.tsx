@@ -6,9 +6,9 @@ import { createGlobalStyle } from 'styled-components';
 import { mobile } from '@sberdevices/plasma-tokens/typo';
 import { darkEva, darkJoy, darkSber } from '@sberdevices/plasma-tokens';
 import { text, background, gradient } from '@sberdevices/plasma-tokens';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Layout from './components/Layout';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const TypoScale = createGlobalStyle(mobile);
 
@@ -30,6 +30,14 @@ const DocStyles = createGlobalStyle`
       &:focus, &:hover, &:visited, &:link, &:active {
           text-decoration: none;
       }
+    }
+
+    #root {
+      height: 100%;
+    }
+
+    .nativePanel {
+      height: 144px;
     }
 `;
 

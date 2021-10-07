@@ -9,12 +9,13 @@ import RandomCoffee from './RandomCoffee';
 import Person from './Person';
 import { PersonContextProvider } from '../context/personContext';
 import Lego from './Lego';
+import Lucky from './Lucky';
 
 const Router = () => {
     return (
         <Switch>
             <Route path="/lucky">
-                <Lego />
+                <Lucky />
             </Route>
             <Route path="/random">
                 <Random />
@@ -23,7 +24,7 @@ const Router = () => {
                 <PersonContextProvider>
                     <RandomCoffee />
                 </PersonContextProvider>
-            </Route>            
+            </Route>
             <Route path="/person">
                 <PersonContextProvider>
                     <Person />
