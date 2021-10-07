@@ -53,39 +53,39 @@ const App = () => {
       case "randomAction":
         history.push("/random");
         break;
+        case "randomCoffee":
+          history.push("/randomCoffee");
+          break;
       default:
         console.log("дефолт");
     }
   }
 
   return (
-    <BrowserRouter>
-      <AppContext.Provider value={{
-        authenticated: true
-      }}>
-        <DeviceThemeProvider detectDeviceCallback={() => 'mobile'}>
-          <TypoScale />
-          <DocStyles />
-          {(() => {
-            switch (character) {
-              case 'sber':
-                return <ThemeBackgroundSber />;
-              case 'eva':
-                return <ThemeBackgroundEva />;
-              case 'joy':
-                return <ThemeBackgroundJoy />;
-              default:
-                return;
-            }
-          })()}
+    <AppContext.Provider value={{
+      authenticated: true
+    }}>
+      <DeviceThemeProvider detectDeviceCallback={() => 'mobile'}>
+        <TypoScale />
+        <DocStyles />
+        {(() => {
+          switch (character) {
+            case 'sber':
+              return <ThemeBackgroundSber />;
+            case 'eva':
+              return <ThemeBackgroundEva />;
+            case 'joy':
+              return <ThemeBackgroundJoy />;
+            default:
+              return;
+          }
+        })()}
 
           <EventContextProvider>
             <Layout />
           </EventContextProvider>
         </DeviceThemeProvider>
       </AppContext.Provider >
-    </BrowserRouter>
-
   )
 };
 

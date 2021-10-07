@@ -9,15 +9,14 @@ const StyledCard = styled(Card)`
 `;
 
 const Main: React.FC = () => (
-    <Row>
+    <><Row>
         <Col sizeS={6} sizeM={6} sizeL={6} sizeXL={6} type="rel">
             <StyledCard tabIndex={0}>
                 <CardBody>
                     <CardMedia
                         src={img1}
                         placeholder={img1}
-                        ratio="1 / 1"
-                    />
+                        ratio="1 / 1" />
                     <CardContent cover>
                         <TextBox>
                             <TextBoxBigTitle>Выбор случайного события</TextBoxBigTitle>
@@ -32,8 +31,7 @@ const Main: React.FC = () => (
                                 outlined={false}
                                 stretch
                                 style={{ marginTop: '1em' }}
-                                tabIndex={-1}
-                            />
+                                tabIndex={-1} />
                         </Link>
                     </CardContent>
                 </CardBody>
@@ -46,8 +44,7 @@ const Main: React.FC = () => (
                     <CardMedia
                         src={img2}
                         placeholder={img2}
-                        ratio="1 / 1"
-                    />
+                        ratio="1 / 1" />
                     <CardContent cover>
                         <TextBox>
                             <TextBoxBigTitle>Чем заняться осенью?</TextBoxBigTitle>
@@ -57,7 +54,34 @@ const Main: React.FC = () => (
                 </CardBody>
             </StyledCard>
         </Col>
-    </Row>
+        <Col sizeS={6} sizeM={6} sizeL={6} sizeXL={6} type="rel">
+            <StyledCard tabIndex={1}>
+                <CardBody>
+                    <CardMedia
+                        src={img1}
+                        placeholder={img1}
+                        ratio="1 / 1" />
+                    <CardContent cover>
+                        <TextBox>
+                            <TextBoxBigTitle>RandomCoffer</TextBoxBigTitle>
+                            <TextBoxSubTitle>Проведи классно время</TextBoxSubTitle>
+                        </TextBox>
+                        <Link to="/randomCoffee">
+                            <Button
+                                text="RandomCoffe!"
+                                view="primary"
+                                size="s"
+                                scaleOnInteraction={false}
+                                outlined={false}
+                                stretch
+                                style={{ marginTop: '1em' }}
+                                tabIndex={-1} />
+                        </Link>
+                    </CardContent>
+                </CardBody>
+            </StyledCard>
+        </Col>
+    </Row></>
 );
 
 export default Main;

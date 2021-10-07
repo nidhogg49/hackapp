@@ -5,6 +5,9 @@ import {
 import Main from './Main';
 import Random from './Random';
 import MyCard from './Card';
+import RandomCoffee from './RandomCoffee';
+import Person from './Person';
+import { PersonContextProvider } from '../context/personContext';
 import Lego from './Lego';
 
 const Router = () => {
@@ -15,6 +18,16 @@ const Router = () => {
             </Route>
             <Route path="/random">
                 <Random />
+            </Route>
+            <Route path="/randomCoffee">
+                <PersonContextProvider>
+                    <RandomCoffee />
+                </PersonContextProvider>
+            </Route>            
+            <Route path="/person">
+                <PersonContextProvider>
+                    <Person />
+                </PersonContextProvider>
             </Route>
             <Route path="/card">
                 <MyCard />
