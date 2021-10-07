@@ -2,20 +2,19 @@ import {
     Switch,
     Route
 } from 'react-router-dom';
-import Layout from './Layout';
 import Main from './Main';
 import Random from './Random';
-import Lucky from './Lucky';
 import MyCard from './Card';
 import RandomCoffee from './RandomCoffee';
 import Person from './Person';
 import { PersonContextProvider } from '../context/personContext';
+import Lego from './Lego';
 
-const Router = () => (
-    <Layout>
+const Router = () => {
+    return (
         <Switch>
             <Route path="/lucky">
-                <Lucky />
+                <Lego />
             </Route>
             <Route path="/random">
                 <Random />
@@ -33,11 +32,14 @@ const Router = () => (
             <Route path="/card">
                 <MyCard />
             </Route>
+            <Route path="/lego">
+                <Lego />
+            </Route>
             <Route path="/">
                 <Main />
             </Route>
         </Switch>
-    </Layout>
-);
+    )
+};
 
 export default Router;

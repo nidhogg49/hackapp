@@ -1,6 +1,8 @@
 import Header from "./Header";
 import { Container } from "@sberdevices/plasma-ui";
 import styled from "styled-components";
+import Router from './Router';
+import { AppContext } from "../context/context";
 
 const ContainerStyled = styled(Container)`
     height: calc(100vh - 144px);
@@ -8,11 +10,20 @@ const ContainerStyled = styled(Container)`
     flex-direction: column;
 `;
 
-const Layout: React.FC = (props) => {
+const Layout = () => {
     return (
         <ContainerStyled>
             <Header />
-            {props.children}
+            <AppContext.Consumer>
+                {
+                    ({ authenticated }) => {
+                        if (authenticated) {
+                            return <Router />
+                        }
+                        return <h1>Необходимо войти с систему</h1>
+                    }
+                }
+            </AppContext.Consumer>
         </ContainerStyled>
     )
 };

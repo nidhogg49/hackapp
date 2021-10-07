@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^5.0.0-beta.5",
+    "@material-ui/styled-engine-sc": "^5.0.0-beta.5",
     "@sberdevices/assistant-client": "^4.3.1",
     "@sberdevices/plasma-icons": "^1.39.0",
     "@sberdevices/plasma-tokens": "^1.12.0",

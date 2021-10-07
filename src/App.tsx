@@ -1,14 +1,15 @@
-import React, { useState, useContext } from 'react';
-import { AppContext } from './context/context'
+import { AppContext } from './context/context';
+import { BrowserRouter } from 'react-router-dom';
+import { DeviceThemeProvider } from '@sberdevices/plasma-ui';
+import { AssistantContext } from './context/assistantContext';
+import { EventContextProvider } from './context/eventContext';
 import { createGlobalStyle } from 'styled-components';
 import { sberBox } from '@sberdevices/plasma-tokens/typo';
 import { darkEva, darkJoy, darkSber } from '@sberdevices/plasma-tokens';
 import { text, background, gradient } from '@sberdevices/plasma-tokens';
-import { DeviceThemeProvider } from '@sberdevices/plasma-ui';
-import Router from './components/Router';
-import { useHistory } from "react-router-dom";
-import { AssistantContext } from './context/assistantContext';
-import { EventContextProvider } from './context/eventContext';
+import { useContext } from "react";
+import Layout from './components/Layout';
+import { useHistory } from 'react-router-dom';
 
 const TypoScale = createGlobalStyle(sberBox);
 
@@ -37,19 +38,17 @@ const ThemeBackgroundEva = createGlobalStyle(darkEva);
 const ThemeBackgroundSber = createGlobalStyle(darkSber);
 const ThemeBackgroundJoy = createGlobalStyle(darkJoy);
 
-const App: React.FC = () => {
-  const [character] = useState('sber');
-
-  const { data } = useContext(AssistantContext);
-
-  console.log('data: ', data);
+const App = () => {
+  const { data, character } = useContext(AssistantContext);
 
   const history = useHistory();
 
   if (data?.type === "smart_app_data") {
+    console.log('app', data);
+
     switch (data?.action?.type) {
       case "go_to_search":
-        history.push("/search");
+        history.push("/lucky");
         break;
       case "randomAction":
         history.push("/random");
@@ -61,11 +60,10 @@ const App: React.FC = () => {
         console.log("дефолт");
     }
   }
+
   return (
     <AppContext.Provider value={{
-      authenticated: true,
-      lang: 'en',
-      theme: 'dark'
+      authenticated: true
     }}>
       <DeviceThemeProvider detectDeviceCallback={() => 'mobile'}>
         <TypoScale />
@@ -82,22 +80,13 @@ const App: React.FC = () => {
               return;
           }
         })()}
-        <EventContextProvider>
-        
-          <AppContext.Consumer>
-            {
-              ({ authenticated, lang }) => {
-                if (authenticated) {
-                  return <Router />
-                }
-                return <h1>Необходимо войти с систему</h1>
-              }
-            }
-          </AppContext.Consumer>
-        </EventContextProvider>
-      </DeviceThemeProvider>
-    </AppContext.Provider >
-  );
+
+          <EventContextProvider>
+            <Layout />
+          </EventContextProvider>
+        </DeviceThemeProvider>
+      </AppContext.Provider >
+  )
 };
 
 export default App;
