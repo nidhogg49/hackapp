@@ -7,6 +7,9 @@ import Main from './Main';
 import Random from './Random';
 import Lucky from './Lucky';
 import MyCard from './Card';
+import RandomCoffee from './RandomCoffee';
+import Person from './Person';
+import { PersonContextProvider } from '../context/personContext';
 
 const Router = () => (
     <Layout>
@@ -16,6 +19,16 @@ const Router = () => (
             </Route>
             <Route path="/random">
                 <Random />
+            </Route>
+            <Route path="/randomCoffee">
+                <PersonContextProvider>
+                    <RandomCoffee />
+                </PersonContextProvider>
+            </Route>            
+            <Route path="/person">
+                <PersonContextProvider>
+                    <Person />
+                </PersonContextProvider>
             </Route>
             <Route path="/card">
                 <MyCard />

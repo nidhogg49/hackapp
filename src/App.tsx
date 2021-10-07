@@ -54,6 +54,9 @@ const App: React.FC = () => {
       case "randomAction":
         history.push("/random");
         break;
+        case "randomCoffee":
+          history.push("/randomCoffee");
+          break;
       default:
         console.log("дефолт");
     }
@@ -80,6 +83,7 @@ const App: React.FC = () => {
           }
         })()}
         <EventContextProvider>
+        
           <AppContext.Consumer>
             {
               ({ authenticated, lang }) => {
