@@ -48,23 +48,16 @@ const StyledTextBoxSubTitle = styled(TextBoxSubTitle)`
 declare type Direction = 'left' | 'right' | 'up' | 'down'
 
 
-const Main = () => {
+const Main = React.memo(() => {
     const [items, setItems] = useState([] as Array<any>);
     const [index, setIndex] = useState(0);
     const { event, setEvent } = useContext<any>(EventContext);
     const [lastDirection, setLastDirection] = useState<Direction>();
 
-    const swiped = (direction: Direction) => {
-        setLastDirection(direction)
-        console.log(direction);
-    }
+    const onSwipe = (direction: Direction) => {
+        console.log('onSwipe');
 
-    const onCardLeftScreen = (direction: Direction, index: number) => {
-        if (direction === 'left') {
-            handlerSkip();
-        } else {
-            handlerChoose(index);
-        }
+        handlerSkip();
     }
 
     const getLucky = () => {
@@ -86,7 +79,7 @@ const Main = () => {
                 console.count('growth');
                 console.log('growth', resp);
 
-                setItems(() => [...items, ...resp.data]);
+                setItems(() => [...items, ...resp.data.reverse()]);
             })
             .catch((err) => {
                 console.log('err', err);
@@ -94,71 +87,75 @@ const Main = () => {
     }
 
     const handlerSkip = () => {
-        console.log('handlerSkip');
-        setIndex(index + 1);
-        getLucky();
+        let newItems = items.filter((el, i) => i !== items.length - 1);
+        console.log('handlerSkip', newItems);
+
+        setItems(newItems);
+
+        //getLucky();
     };
 
     const handlerChoose = (i: number) => {
+        console.log('handlerChoose', i);
         setEvent({ ...items[i] });
 
-        api.post('api/v1/route')
-            .then((resp) => {
-                console.log('route', resp.data);
+        // api.post('api/v1/route')
+        //     .then((resp) => {
+        //         console.log('route', resp.data);
 
-                const routeId: number = resp.data.id;
+        //         const routeId: number = resp.data.id;
 
-                api({
-                    method: 'post',
-                    url: 'api/v1/route-event',
-                    data: { ...items[i] },
-                    params: {
-                        routeId: routeId
-                    }
-                })
-                    .then((resp) => {
-                        console.log('route-event', resp);
+        //         api({
+        //             method: 'post',
+        //             url: 'api/v1/route-event',
+        //             data: { ...items[i] },
+        //             params: {
+        //                 routeId: routeId
+        //             }
+        //         })
+        //             .then((resp) => {
+        //                 console.log('route-event', resp);
 
-                        const getCurrentPositionSuccess = (location: any) => {
-                            console.log(location);
+        //                 const getCurrentPositionSuccess = (location: any) => {
+        //                     console.log(location);
 
-                            api({
-                                method: 'get',
-                                url: 'api/v1/route/distance',
-                                params: {
-                                    currentLat: location.coords.latitude,
-                                    currentLon: location.coords.longitude,
-                                    routeId: routeId
-                                }
+        //                     api({
+        //                         method: 'get',
+        //                         url: 'api/v1/route/distance',
+        //                         params: {
+        //                             currentLat: location.coords.latitude,
+        //                             currentLon: location.coords.longitude,
+        //                             routeId: routeId
+        //                         }
 
-                            })
-                                .then((resp) => {
-                                    console.log('asdadsadsadfewvrebgb', resp);
-                                });
-                        };
+        //                     })
+        //                         .then((resp) => {
+        //                             console.log('asdadsadsadfewvrebgb', resp);
+        //                         });
+        //                 };
 
-                        window.navigator.geolocation.getCurrentPosition((location) => { getCurrentPositionSuccess(location) }, (err) => { console.log('getCurrentPosition', err) });
-                    })
-                    .catch((err) => {
-                        console.log('err', err);
-                    });
+        //                 window.navigator.geolocation.getCurrentPosition((location) => { getCurrentPositionSuccess(location) }, (err) => { console.log('getCurrentPosition', err) });
+        //             })
+        //             .catch((err) => {
+        //                 console.log('err', err);
+        //             });
 
-                // setItems(() => [...items, resp.data]);
-            })
-            .catch((err) => {
-                console.log('err', err);
-            });
+        //         // setItems(() => [...items, resp.data]);
+        //     })
+        //     .catch((err) => {
+        //         console.log('err', err);
+        //     });
 
         console.log('Lucky', event)
     };
 
     useEffect(() => {
         getGrowth();
-    });
+    }, []);
 
     const CardGrowth: React.FC<any> = ({ item, i }) => {
         return (
-            <TinderCard className='swipe' onSwipe={(dir) => swiped(dir)} onCardLeftScreen={(dir) => onCardLeftScreen(dir, i)} key={item.name}>
+            <TinderCard className='swipe' onSwipe={(dir) => onSwipe(dir)} key={item.name}>
                 <StyledCard tabIndex={0} style={{ background: `url(${item.imageUrl}) center center / cover no-repeat` }}>
                     <CardBody>
                         <CardContent cover>
@@ -172,17 +169,17 @@ const Main = () => {
                                     item.description}
                                 </TextBoxTitle>
                             </TextBox>
-                            <Link to="/card">
-                                <Button
-                                    text="Ознакомиться"
-                                    view="primary"
-                                    size="s"
-                                    scaleOnInteraction={false}
-                                    outlined={false}
-                                    stretch
-                                    style={{ marginTop: '1em' }}
-                                    tabIndex={-1} />
-                            </Link>
+                            <Button
+                                text="Перейти"
+                                view="primary"
+                                size="s"
+                                scaleOnInteraction={false}
+                                outlined={false}
+                                stretch
+                                style={{ marginTop: '1em' }}
+                                tabIndex={-1}
+                                onClick={() => handlerChoose(i)}
+                            />
                         </CardContent>
                     </CardBody>
                 </StyledCard>
@@ -192,8 +189,8 @@ const Main = () => {
 
     const CardLucky: React.FC<any> = ({ item, i }) => {
         return (
-            <TinderCard className='swipe' onSwipe={(dir) => swiped(dir)} onCardLeftScreen={(dir) => onCardLeftScreen(dir, i)} key={item.name}>
-                <StyledCard tabIndex={0} style={{ background: `url(${item}) center center / cover no-repeat` }}>
+            <TinderCard className='swipe' onSwipe={(dir) => onSwipe(dir)} key={item.name}>
+                <StyledCard tabIndex={0} style={{ background: `url(${item.imageUrl}) center center / cover no-repeat` }}>
                     <CardBody>
                         <CardContent cover>
                             <TextBox>
@@ -230,7 +227,7 @@ const Main = () => {
                 items.map((item: any, i: number) => {
                     switch (item?.type) {
                         case "growth":
-                            return (<CardGrowth item={item} i={i} />);
+                            return (<CardGrowth item={item} index={i} key={i} />);
                         default:
                             return (<CardLucky item={item} i={i} />);
                     }
@@ -238,6 +235,6 @@ const Main = () => {
             }
         </StyledCardContainer>
     )
-};
+});
 
 export default Main;

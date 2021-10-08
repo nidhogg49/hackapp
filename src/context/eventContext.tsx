@@ -12,13 +12,13 @@ export const EventContext = createContext<contextType>({
 
 export const EventContextProvider: React.FC = ({ children }) => {
 
-    const setLanguage = (event: object) => {
+    const setEvent = (event: object) => {
         setState({ ...state, event: event });
     }
 
     const [state, setState] = useState<any>({
         event: null,
-        setEvent: setLanguage
+        setEvent: setEvent
     });
 
     return (
