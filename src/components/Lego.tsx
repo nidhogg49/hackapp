@@ -4,6 +4,7 @@ import { buttonSecondary } from '@sberdevices/plasma-tokens';
 import { Card, CardBody, CardContent, CardMedia, TextBox, TextBoxSubTitle, Button, ActionButton, Headline3, Footnote1, TextBoxTitle } from '@sberdevices/plasma-ui';
 import { Title } from '@sberdevices/plasma-ui/components/TextBox/TextBox';
 import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { EventContext } from '../context/eventContext';
 import img1 from '../img/320_320_0.jpeg'
@@ -17,7 +18,7 @@ const steps = [
     },
 ]
 
-const steps2 = [0, 0, 1, 1];
+const steps2 = [0, 1];
 
 const StyledCard = styled(Card)`
     width: 100%;
@@ -62,6 +63,7 @@ const StyledStepper = styled(Stepper)`
 const ButtonWrapper = styled.div`
     display: flex;
     justify-content: space-around;
+    max-width: 100%;
 `;
 
 const StyledTextBox = styled(TextBox)`
@@ -158,7 +160,7 @@ const Lego = () => {
                             stretch
                             style={{ marginTop: '1em' }}
                             tabIndex={-1}
-                            onClick={handleNext}
+                            onClick={() => { window.open(event.courseUrl, '_blank')?.focus() }}
                         />
                     </CardContent>
                 </CardBody >
@@ -180,40 +182,119 @@ const Lego = () => {
                             <TextBoxSubTitle>{event.tags.map((el: string, i: number) => (`${el} ${i === (event.tags.length - 1) ? '' : '• '}`))}</TextBoxSubTitle>
                             {event.duration > 0 &&
                                 <StyledTextBoxSubTitle><StyledIconClockFilled size='s' color="#09A552" />{event.duration} мин.</StyledTextBoxSubTitle>}
-                            <TextBoxTitle>{((event.description).length > 103) ?
-                                (((event.description).substring(0, 103 - 3)) + '...') :
-                                event.description}
-                            </TextBoxTitle>
+                            <TextBoxTitle dangerouslySetInnerHTML={{ __html: event.description }}></TextBoxTitle>
                         </TextBox>
                         <StyledStepper activeStep={activeStep} orientation="vertical">
-                            {steps.map((id, index: number) => (
-                                <Step key={index} className={index <= activeStep ? 'my-green-step' : ''}>
-                                    <StepLabel onClick={() => (handlerLabelClick(index))} StepIconComponent={() => (timeIcon(index + 1))}><Title>{event.name}</Title></StepLabel>
+                            {steps2.map((id, index: number) => {
+                                if (index === 0) {
+                                    return (<Step key={index} className={index <= activeStep ? 'my-green-step' : ''}>
+                                        <StepLabel onClick={() => (handlerLabelClick(index))} StepIconComponent={() => (timeIcon(index + 1))}><Title>Такси</Title></StepLabel>
+                                        <div>
+                                            <Button
+                                                text="Такси"
+                                                view="primary"
+                                                size="s"
+                                                scaleOnInteraction={false}
+                                                outlined={false}
+                                                stretch
+                                                style={{ marginTop: '1em', marginRight: '1em' }}
+                                                tabIndex={-1}
+                                                onClick={handleNext}
+                                            />
+                                            <Button
+                                                text="Общественный транспорт"
+                                                view="secondary"
+                                                size="s"
+                                                scaleOnInteraction={false}
+                                                outlined={false}
+                                                stretch
+                                                style={{ marginTop: '1em', marginRight: '1em' }}
+                                                tabIndex={-1}
+                                                onClick={handleNext}
+                                            />
+                                            <Button
+                                                text="пешком"
+                                                view="secondary"
+                                                size="s"
+                                                scaleOnInteraction={false}
+                                                outlined={false}
+                                                stretch
+                                                style={{ marginTop: '1em', marginRight: '1em' }}
+                                                tabIndex={-1}
+                                                onClick={handleNext}
+                                            />
+                                        </div>
 
-                                    <StepContent>
-                                        <StyledTextBox>
-                                            <TextBoxSubTitle>Откуда</TextBoxSubTitle>
-                                            <Footnote1></Footnote1>
-                                        </StyledTextBox>
+                                        <StepContent>
+                                            <StyledTextBox>
+                                                <TextBoxSubTitle>Откуда</TextBoxSubTitle>
+                                                <Footnote1>Цветной бульвар, 13c2</Footnote1>
+                                            </StyledTextBox>
 
-                                        <StyledTextBox>
-                                            <TextBoxSubTitle>Куда</TextBoxSubTitle>
-                                            <Footnote1>{ }</Footnote1>
-                                        </StyledTextBox>
+                                            <StyledTextBox>
+                                                <TextBoxSubTitle>Куда</TextBoxSubTitle>
+                                                <Footnote1>ул. Обручева, д 30/1</Footnote1>
+                                            </StyledTextBox>
 
-                                        <StyledTextBox>
-                                            <TextBoxSubTitle>Время в пути</TextBoxSubTitle>
-                                            <Footnote1>{ }</Footnote1>
-                                        </StyledTextBox>
+                                            <StyledTextBox>
+                                                <TextBoxSubTitle>Время в пути</TextBoxSubTitle>
+                                                <Footnote1>40-50 мин.</Footnote1>
+                                            </StyledTextBox>
 
-                                        <StyledTextBox>
-                                            <TextBoxSubTitle>Стоимость</TextBoxSubTitle>
-                                            <Footnote1>{ }</Footnote1>
-                                        </StyledTextBox>
+                                            <StyledTextBox>
+                                                <TextBoxSubTitle>Стоимость</TextBoxSubTitle>
+                                                <Footnote1>от 300 ₽</Footnote1>
+                                            </StyledTextBox>
 
-                                        <ButtonWrapper>
-                                            {
-                                                index !== 0 && <Button
+                                            <ButtonWrapper>
+                                                {
+                                                    index !== 0 && <Button
+                                                        text="Назад"
+                                                        view="secondary"
+                                                        size="s"
+                                                        scaleOnInteraction={false}
+                                                        outlined={false}
+                                                        stretch
+                                                        style={{ marginTop: '1em', marginRight: '1em' }}
+                                                        tabIndex={-1}
+                                                        onClick={handleBack}
+                                                    />
+                                                }
+                                                <Button
+                                                    text="Продолжить"
+                                                    view="primary"
+                                                    size="s"
+                                                    scaleOnInteraction={false}
+                                                    outlined={false}
+                                                    stretch
+                                                    style={{ marginTop: '1em' }}
+                                                    tabIndex={-1}
+                                                    onClick={handleNext}
+                                                />
+                                            </ButtonWrapper>
+                                        </StepContent>
+                                    </Step>)
+                                } else {
+                                    return (<Step key={index} className={index <= activeStep ? 'my-green-step' : ''}>
+                                        <StepLabel onClick={() => (handlerLabelClick(index))} StepIconComponent={() => (timeIcon(index + 1))}><Title>Такси</Title></StepLabel>
+                                        <div>
+                                            <Button
+                                                text="Купить билет"
+                                                view="primary"
+                                                size="s"
+                                                scaleOnInteraction={false}
+                                                outlined={false}
+                                                stretch
+                                                style={{ marginTop: '1em', marginRight: '1em' }}
+                                                tabIndex={-1}
+                                                onClick={handleNext}
+                                            />
+                                        </div>
+
+                                        <StepContent>
+
+                                            <ButtonWrapper>
+                                                {index !== 0 && <Button
                                                     text="Назад"
                                                     view="secondary"
                                                     size="s"
@@ -223,23 +304,14 @@ const Lego = () => {
                                                     style={{ marginTop: '1em', marginRight: '1em' }}
                                                     tabIndex={-1}
                                                     onClick={handleBack}
-                                                />
-                                            }
-                                            <Button
-                                                text="Продолжить"
-                                                view="primary"
-                                                size="s"
-                                                scaleOnInteraction={false}
-                                                outlined={false}
-                                                stretch
-                                                style={{ marginTop: '1em' }}
-                                                tabIndex={-1}
-                                                onClick={handleNext}
-                                            />
-                                        </ButtonWrapper>
-                                    </StepContent>
-                                </Step>
-                            ))}
+                                                />}
+
+                                            </ButtonWrapper>
+                                        </StepContent>
+                                    </Step>)
+                                }
+                            }
+                            )}
                         </StyledStepper>
                     </CardContent>
                 </CardBody >

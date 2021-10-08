@@ -86,8 +86,8 @@ const Main = React.memo(() => {
                 console.count('growth');
                 console.log('growth', resp);
 
-                //setItems(() => [...items, ...resp.data]);
-                setItems(() => resp.data.filter((el: any, i: number) => i < 5));
+                setItems(() => [...items, ...resp.data]);
+
             })
             .catch((err) => {
                 console.log('err', err);
@@ -127,6 +127,10 @@ const Main = React.memo(() => {
                         .then((resp) => {
                             console.log('route-event', resp);
 
+                            const events: any = { event: { ...resp.data } }
+
+                            console.log(events);
+
                             const getCurrentPositionSuccess = (location: any) => {
                                 console.log(location);
 
@@ -141,6 +145,8 @@ const Main = React.memo(() => {
 
                                 })
                                     .then((resp) => {
+                                        events.taxi = { ...resp.data }
+                                        setEvent(() => [...items, ...events]);
                                         console.log('asdadsadsadfewvrebgb', resp);
                                     });
                             };
@@ -150,8 +156,6 @@ const Main = React.memo(() => {
                         .catch((err) => {
                             console.log('err', err);
                         });
-
-                    setItems(() => [...items, resp.data]);
                 })
                 .catch((err) => {
                     console.log('err', err);
