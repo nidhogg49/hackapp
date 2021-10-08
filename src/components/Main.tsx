@@ -69,12 +69,9 @@ const Main = React.memo(() => {
     const getLucky = () => {
         api.get('api/event/v1/lucky')
             .then((resp) => {
-                console.count('lucky');
-                console.log(resp);
-
                 let newItems = [...items];
 
-                newItems.push(resp.data);
+                newItems.reverse().push(resp.data);
 
                 setItems(() => [...newItems]);
             })
@@ -89,8 +86,8 @@ const Main = React.memo(() => {
                 console.count('growth');
                 console.log('growth', resp);
 
-                //setItems(() => [...items, ...resp.data.reverse()]);
-                setItems(() => resp.data.filter((el: any, i: number) => i < 3));
+                //setItems(() => [...items, ...resp.data]);
+                setItems(() => resp.data.filter((el: any, i: number) => i < 5));
             })
             .catch((err) => {
                 console.log('err', err);
@@ -227,7 +224,7 @@ const Main = React.memo(() => {
                                 outlined={false}
                                 stretch
                                 style={{ marginTop: '1em' }}
-                                onClick={() => (handlerChoose(index))}
+                                onTouchStart={() => (handlerChoose(index))}
                             />
                         </CardContent>
                     </CardBody>
