@@ -1,5 +1,4 @@
-import { IconSearch } from "@sberdevices/plasma-icons";
-import { ActionButton, HeaderBack, HeaderContent, HeaderRoot, HeaderSubtitle, HeaderTitle, HeaderTitleWrapper } from "@sberdevices/plasma-ui";
+import { HeaderBack, HeaderRoot, HeaderTitle, HeaderTitleWrapper } from "@sberdevices/plasma-ui";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -18,16 +17,8 @@ const Header: React.FC = function () {
                 <HeaderBack />
             </StyledLink>
             <HeaderTitleWrapper>
-                <HeaderSubtitle>Салют,</HeaderSubtitle>
                 <HeaderTitle>Чем займемся?</HeaderTitle>
             </HeaderTitleWrapper>
-            <HeaderContent>
-                <StyledLink to="/search">
-                    <ActionButton pin="circle-circle">
-                        <IconSearch />
-                    </ActionButton>
-                </StyledLink>
-            </HeaderContent>
         </HeaderRoot >
     );
 }

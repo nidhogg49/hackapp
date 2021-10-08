@@ -1,8 +1,7 @@
 import React, { createContext, useState } from "react";
-import { eventData } from '../context/types'
 
 interface contextType {
-    event: eventData | null;
+    event: any | null;
     setEvent: void
 }
 

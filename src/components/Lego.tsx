@@ -1,7 +1,7 @@
 import { Step, Stepper, StepLabel, StepContent } from '@material-ui/core';
 import { IconBankCardAlt1, IconClock, IconLocation } from '@sberdevices/plasma-icons';
-import { buttonPrimary, buttonSecondary } from '@sberdevices/plasma-tokens';
-import { Card, CardBody, CardContent, CardMedia, TextBox, TextBoxSubTitle, Button, ActionButton, Headline3, TextBoxTitle, Footnote1 } from '@sberdevices/plasma-ui';
+import { buttonSecondary } from '@sberdevices/plasma-tokens';
+import { Card, CardBody, CardContent, CardMedia, TextBox, TextBoxSubTitle, Button, ActionButton, Headline3, Footnote1 } from '@sberdevices/plasma-ui';
 import { Title } from '@sberdevices/plasma-ui/components/TextBox/TextBox';
 import { useState } from 'react';
 import styled from 'styled-components';

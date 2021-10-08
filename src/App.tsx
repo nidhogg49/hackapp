@@ -6,9 +6,9 @@ import { createGlobalStyle } from 'styled-components';
 import { mobile } from '@sberdevices/plasma-tokens/typo';
 import { darkEva, darkJoy, darkSber } from '@sberdevices/plasma-tokens';
 import { text, background, gradient } from '@sberdevices/plasma-tokens';
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Layout from './components/Layout';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const TypoScale = createGlobalStyle(mobile);
 

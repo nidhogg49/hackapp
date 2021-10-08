@@ -1,6 +1,6 @@
 import Header from "./Header";
 import { Container } from "@sberdevices/plasma-ui";
-import styled, { StyledComponent } from "styled-components";
+import styled from "styled-components";
 import Router from './Router';
 import { AppContext } from "../context/context";
 import { useEffect, useRef } from "react";
@@ -35,7 +35,7 @@ const Layout = () => {
 
     return (
         <ContainerStyled>
-            <Header />
+            {window.location.pathname !== '/' && <Header />}
             <WrapperStyled ref={WrapperStyledRef}>
                 <AppContext.Consumer>
                     {
