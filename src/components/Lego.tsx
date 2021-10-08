@@ -1,46 +1,23 @@
 import { Step, Stepper, StepLabel, StepContent } from '@material-ui/core';
 import { IconBankCardAlt1, IconClock, IconLocation } from '@sberdevices/plasma-icons';
 import { buttonSecondary } from '@sberdevices/plasma-tokens';
-import { Card, CardBody, CardContent, CardMedia, TextBox, TextBoxSubTitle, Button, ActionButton, Headline3, Footnote1 } from '@sberdevices/plasma-ui';
+import { Card, CardBody, CardContent, CardMedia, TextBox, TextBoxSubTitle, Button, ActionButton, Headline3, Footnote1, TextBoxTitle } from '@sberdevices/plasma-ui';
 import { Title } from '@sberdevices/plasma-ui/components/TextBox/TextBox';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { EventContext } from '../context/eventContext';
 import img1 from '../img/320_320_0.jpeg'
 
 const steps = [
     {
-        label: 'Select campaign settings',
-        description: `For each ad campaign that you create, you can control how much
-                you're willing to spend on clicks and conversions, which networks
-                and geographical locations you want your ads to show on, and more.`,
+        label: 'Общее описание'
     },
     {
-        label: 'Create an ad group',
-        description:
-            'An ad group contains one or more ads which target a shared set of keywords.',
+        label: 'Зачем мне это нужно'
     },
-    {
-        label: 'Create an ad',
-        description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-    },
-    {
-        label: 'Create an ad',
-        description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-    },
-    {
-        label: 'Create an ad',
-        description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-    },
-];
+]
+
+const steps2 = [0, 0, 1, 1];
 
 const StyledCard = styled(Card)`
     width: 100%;
@@ -99,6 +76,7 @@ const timeIcon = (index: number) => (
 
 const Lego = () => {
     const [activeStep, setActiveStep] = useState(0);
+    const { event, setEvent } = useContext<any>(EventContext);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -112,22 +90,24 @@ const Lego = () => {
         setActiveStep(index);
     };
 
-    return (
-        <div>
-            <StyledCard tabIndex={0}>
+    const CardGrowth: React.FC<any> = () => {
+        return (
+            <StyledCard >
                 <CardBody>
                     <StyledCardMedia
-                        src={img1}
-                        placeholder={img1}
+                        src={event.imageUrl}
                     >
                     </StyledCardMedia>
                     <CardContent cover={false}>
                         <TextBox>
-                            <Headline3>Шоу “ВСЕ БУДЕТ ХОРОШО!”</Headline3>
-                            <TextBoxSubTitle>Цирк • Шоу • Для детей</TextBoxSubTitle>
-                            <StyledTextBoxSubTitle><StyledIconLocation size='s' color="#09A552" />от 1 500 ₽</StyledTextBoxSubTitle>
-                            <StyledTextBoxSubTitle><StyledIconClockFilled size='s' color="#09A552" />Суббота, 9 октября, 14:00</StyledTextBoxSubTitle>
-                            <StyledTextBoxSubTitle><StyledIconTicket size='s' color="#09A552" />от 1 500 ₽</StyledTextBoxSubTitle>
+                            <Headline3>{event.name}</Headline3>
+                            <TextBoxSubTitle>{event.tags.map((el: string, i: number) => (`${el} ${i === (event.tags.length - 1) ? '' : '• '}`))}</TextBoxSubTitle>
+                            {event.duration > 0 &&
+                                <StyledTextBoxSubTitle><StyledIconClockFilled size='s' color="#09A552" />{event.duration} мин.</StyledTextBoxSubTitle>}
+                            <TextBoxTitle>{((event.description).length > 103) ?
+                                (((event.description).substring(0, 103 - 3)) + '...') :
+                                event.description}
+                            </TextBoxTitle>
                         </TextBox>
                         <StyledStepper activeStep={activeStep} orientation="vertical">
                             {steps.map((step, index: number) => (
@@ -136,23 +116,99 @@ const Lego = () => {
 
                                     <StepContent>
                                         <StyledTextBox>
+                                            <Footnote1>{index === 0 ? event.description : event.knowledgeFor}</Footnote1>
+                                        </StyledTextBox>
+
+                                        <ButtonWrapper>
+                                            {
+                                                index !== 0 && <Button
+                                                    text="Назад"
+                                                    view="secondary"
+                                                    size="s"
+                                                    scaleOnInteraction={false}
+                                                    outlined={false}
+                                                    stretch
+                                                    style={{ marginTop: '1em', marginRight: '1em' }}
+                                                    tabIndex={-1}
+                                                    onClick={handleBack}
+                                                />
+                                            }
+                                            <Button
+                                                text="Продолжить"
+                                                view="primary"
+                                                size="s"
+                                                scaleOnInteraction={false}
+                                                outlined={false}
+                                                stretch
+                                                style={{ marginTop: '1em' }}
+                                                tabIndex={-1}
+                                                onClick={handleNext}
+                                            />
+                                        </ButtonWrapper>
+                                    </StepContent>
+                                </Step>
+                            ))}
+                        </StyledStepper>
+                        <Button
+                            text="Перейти"
+                            view="primary"
+                            size="s"
+                            scaleOnInteraction={false}
+                            outlined={false}
+                            stretch
+                            style={{ marginTop: '1em' }}
+                            tabIndex={-1}
+                            onClick={handleNext}
+                        />
+                    </CardContent>
+                </CardBody >
+            </StyledCard >
+        )
+    }
+
+    const CardLucky: React.FC<any> = () => {
+        return (
+            <StyledCard >
+                < CardBody >
+                    <StyledCardMedia
+                        src={event.imageUrl}
+                    >
+                    </StyledCardMedia>
+                    <CardContent cover={false}>
+                        <TextBox>
+                            <Headline3>{event.name}</Headline3>
+                            <TextBoxSubTitle>{event.tags.map((el: string, i: number) => (`${el} ${i === (event.tags.length - 1) ? '' : '• '}`))}</TextBoxSubTitle>
+                            {event.duration > 0 &&
+                                <StyledTextBoxSubTitle><StyledIconClockFilled size='s' color="#09A552" />{event.duration} мин.</StyledTextBoxSubTitle>}
+                            <TextBoxTitle>{((event.description).length > 103) ?
+                                (((event.description).substring(0, 103 - 3)) + '...') :
+                                event.description}
+                            </TextBoxTitle>
+                        </TextBox>
+                        <StyledStepper activeStep={activeStep} orientation="vertical">
+                            {steps.map((id, index: number) => (
+                                <Step key={index} className={index <= activeStep ? 'my-green-step' : ''}>
+                                    <StepLabel onClick={() => (handlerLabelClick(index))} StepIconComponent={() => (timeIcon(index + 1))}><Title>{event.name}</Title></StepLabel>
+
+                                    <StepContent>
+                                        <StyledTextBox>
                                             <TextBoxSubTitle>Откуда</TextBoxSubTitle>
-                                            <Footnote1>{step.label}</Footnote1>
+                                            <Footnote1></Footnote1>
                                         </StyledTextBox>
 
                                         <StyledTextBox>
                                             <TextBoxSubTitle>Куда</TextBoxSubTitle>
-                                            <Footnote1>{step.label}</Footnote1>
+                                            <Footnote1>{ }</Footnote1>
                                         </StyledTextBox>
 
                                         <StyledTextBox>
                                             <TextBoxSubTitle>Время в пути</TextBoxSubTitle>
-                                            <Footnote1>{step.label}</Footnote1>
+                                            <Footnote1>{ }</Footnote1>
                                         </StyledTextBox>
 
                                         <StyledTextBox>
                                             <TextBoxSubTitle>Стоимость</TextBoxSubTitle>
-                                            <Footnote1>{step.label}</Footnote1>
+                                            <Footnote1>{ }</Footnote1>
                                         </StyledTextBox>
 
                                         <ButtonWrapper>
@@ -186,8 +242,14 @@ const Lego = () => {
                             ))}
                         </StyledStepper>
                     </CardContent>
-                </CardBody>
-            </StyledCard>
+                </CardBody >
+            </StyledCard >
+        )
+    }
+
+    return (
+        <div>
+            {event && event.type === 'growth' ? <CardGrowth /> : <CardLucky />}
         </div>
     );
 }
